@@ -14,7 +14,7 @@
   /** Used as the semantic version number. */
   var VERSION = '4.17.5';
 
-  /** Used as the size to enable large array optimizations. */
+  /** 数组的最大的容量 (Used as the size to enable large array optimizations.) */
   var LARGE_ARRAY_SIZE = 200;
 
   /** Error message constants. */
@@ -91,19 +91,19 @@
   /** `Object#toString` result references. */
   var argsTag = '[object Arguments]',
       arrayTag = '[object Array]',
-      asyncTag = '[object AsyncFunction]',
+      asyncTag = '[object AsyncFunction]', // 异步 函数
       boolTag = '[object Boolean]',
       dateTag = '[object Date]',
       domExcTag = '[object DOMException]',
       errorTag = '[object Error]',
       funcTag = '[object Function]',
-      genTag = '[object GeneratorFunction]',
+      genTag = '[object GeneratorFunction]', // Generator 函数
       mapTag = '[object Map]',
       numberTag = '[object Number]',
       nullTag = '[object Null]',
       objectTag = '[object Object]',
       promiseTag = '[object Promise]',
-      proxyTag = '[object Proxy]',
+      proxyTag = '[object Proxy]', // 代理 函数
       regexpTag = '[object RegExp]',
       setTag = '[object Set]',
       stringTag = '[object String]',
@@ -579,13 +579,13 @@
   }
 
   /**
-   * A specialized version of `_.includes` for arrays without support for
-   * specifying an index to search from.
+   * _.includes 的特殊版，
+   * 不支持指定搜索的 index
    *
    * @private
-   * @param {Array} [array] The array to inspect.
-   * @param {*} target The value to search for.
-   * @returns {boolean} Returns `true` if `target` is found, else `false`.
+   * @param {Array} [array] 待检测的数组.
+   * @param {*} target 需要查找的value.
+   * @returns {boolean} 如果目标被找到则返回 `true`，否则 `false` .
    */
   function arrayIncludes(array, value) {
     var length = array == null ? 0 : array.length;
@@ -614,13 +614,13 @@
   }
 
   /**
-   * A specialized version of `_.map` for arrays without support for iteratee
-   * shorthands.
-   *
+   * `_.map` 的特殊版本，
+   * 不支持 iteratee shorthands.
+   * es6: 使用 Array.prototype.map
    * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns the new mapped array.
+   * @param {Array} [array] 需要迭代的数组.
+   * @param {Function} iteratee 每次的迭代的回调.
+   * @returns {Array} 返回 mapped 的 新数组.
    */
   function arrayMap(array, iteratee) {
     var index = -1,
@@ -776,15 +776,15 @@
   }
 
   /**
-   * The base implementation of `_.findIndex` and `_.findLastIndex` without
-   * support for iteratee shorthands.
+   * `_.findIndex` 和 `_.findLastIndex` 的基本实现，不支持
+   * iteratee shorthands.
    *
    * @private
-   * @param {Array} array The array to inspect.
-   * @param {Function} predicate The function invoked per iteration.
-   * @param {number} fromIndex The index to search from.
-   * @param {boolean} [fromRight] Specify iterating from right to left.
-   * @returns {number} Returns the index of the matched value, else `-1`.
+   * @param {Array} array 待检测的数组.
+   * @param {Function} predicate 每次迭代的回调.
+   * @param {number} fromIndex 起始的 index.
+   * @param {boolean} [fromRight] 指定从右边开始遍历数组.
+   * @returns {number} 返回所匹配值的 index, 不匹配则返回 `-1`.
    */
   function baseFindIndex(array, predicate, fromIndex, fromRight) {
     var length = array.length,
@@ -799,18 +799,18 @@
   }
 
   /**
-   * The base implementation of `_.indexOf` without `fromIndex` bounds checks.
+   * `_.indexOf` 的基础实现，不对 `fromIndex` 做检测.
    *
    * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @returns {number} Returns the index of the matched value, else `-1`.
+   * @param {Array} array 待检测的数组.
+   * @param {*} value 需要搜素的值.
+   * @param {number} fromIndex 起始的 index.
+   * @returns {number} 返回匹配的值所在的index，没找到就返回 `-1`
    */
   function baseIndexOf(array, value, fromIndex) {
-    return value === value
+    return value === value // 检测是否是 NAN，es6: Number.isNaN(x) 更加直观
       ? strictIndexOf(array, value, fromIndex)
-      : baseFindIndex(array, baseIsNaN, fromIndex);
+      : baseFindIndex(array, baseIsNaN, fromIndex); // 查找数组中的 NaN 值
   }
 
   /**
@@ -836,11 +836,11 @@
   }
 
   /**
-   * The base implementation of `_.isNaN` without support for number objects.
-   *
+   * `_.isNaN` 的基础实现，不支持数值对象(number objects)
+   * es6: 使用 Number.isNaN
    * @private
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is `NaN`, else `false`.
+   * @param {*} value 待检测的值.
+   * @returns {boolean} 如果是 `NaN` 返回 `true`, 否则 `false`.
    */
   function baseIsNaN(value) {
     return value !== value;
@@ -986,11 +986,11 @@
   }
 
   /**
-   * The base implementation of `_.unary` without support for storing metadata.
+   *  `_.unary` 的基础实现，不支持 storing metadata.
    *
    * @private
-   * @param {Function} func The function to cap arguments for.
-   * @returns {Function} Returns the new capped function.
+   * @param {Function} func 限制参数的方法.
+   * @returns {Function} 返回被限制的新方法.
    */
   function baseUnary(func) {
     return function(value) {
@@ -1265,14 +1265,14 @@
   }
 
   /**
-   * A specialized version of `_.indexOf` which performs strict equality
-   * comparisons of values, i.e. `===`.
+   * `_.indexOf` 的特殊版本，使用严格相等来比较值，
+   * i.e. `===`.
    *
    * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @returns {number} Returns the index of the matched value, else `-1`.
+   * @param {Array} array 待检测的数组.
+   * @param {*} value 待搜索的值.
+   * @param {number} fromIndex 待搜索的骑士 index.
+   * @returns {number} 返回所匹配的值的 index, 不匹配返回 `-1`.
    */
   function strictIndexOf(array, value, fromIndex) {
     var index = fromIndex - 1,
@@ -2763,15 +2763,15 @@
     }
 
     /**
-     * The base implementation of methods like `_.difference` without support
-     * for excluding multiple arrays or iteratee shorthands.
+     * `_.difference` 方法的基本实现,
+     * 不支持多个数组或迭代shorthands
      *
      * @private
-     * @param {Array} array The array to inspect.
-     * @param {Array} values The values to exclude.
+     * @param {Array} array 待检测的数组.
+     * @param {Array} values 包含要排除元素的数组.
      * @param {Function} [iteratee] The iteratee invoked per element.
-     * @param {Function} [comparator] The comparator invoked per element.
-     * @returns {Array} Returns the new array of filtered values.
+     * @param {Function} [comparator] 每个元素的比较调用（The comparator invoked per element）.
+     * @returns {Array} 返回过滤后的新数组.
      */
     function baseDifference(array, values, iteratee, comparator) {
       var index = -1,
@@ -2799,14 +2799,14 @@
       outer:
       while (++index < length) {
         var value = array[index],
-            computed = iteratee == null ? value : iteratee(value);
+            computed = iteratee == null ? value : iteratee(value); // 计算出用于比较的数值
 
         value = (comparator || value !== 0) ? value : 0;
         if (isCommon && computed === computed) {
           var valuesIndex = valuesLength;
           while (valuesIndex--) {
-            if (values[valuesIndex] === computed) {
-              continue outer;
+            if (values[valuesIndex] === computed) { // 遍历出所有 values 的数组，与 computed 的值进行对比，es5推荐使用indexOf，es6推荐使用 includes
+              continue outer; // 用的跳转，不推荐使用。
             }
           }
           result.push(value);
@@ -2815,7 +2815,7 @@
           result.push(value);
         }
       }
-      return result;
+      return result; // 整个方法为了兼容性用的循环遍历，推荐使用es6和es5的方法，效率更高，更直观
     }
 
     /**
@@ -2937,7 +2937,7 @@
      * @private
      * @param {Array} array The array to flatten.
      * @param {number} depth The maximum recursion depth.
-     * @param {boolean} [predicate=isFlattenable] The function invoked per iteration.
+     * @param {boolean} [predicate=isFlattenable] 对每个循环执行的断言.
      * @param {boolean} [isStrict] Restrict to values that pass `predicate` checks.
      * @param {Array} [result=[]] The initial result value.
      * @returns {Array} Returns the new flattened array.
@@ -6916,7 +6916,7 @@
     }
 
     /**
-     * Creates an array of `array` values not included in the other given arrays
+     * 创建一个具有唯一array值的数组，每个值不包含在其他给定的数组中。结果值的顺序是由第一个数组中的顺序确定。
      * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
      * for equality comparisons. The order and references of result values are
      * determined by the first array.
@@ -11296,16 +11296,16 @@
     var isArrayBuffer = nodeIsArrayBuffer ? baseUnary(nodeIsArrayBuffer) : baseIsArrayBuffer;
 
     /**
-     * Checks if `value` is array-like. A value is considered array-like if it's
-     * not a function and has a `value.length` that's an integer greater than or
-     * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+     * 检测 `value` 是否是一个 类数组类型(array-like). 如果该值不是方法(function), 
+     * 如果 `value.length` 大于等于 0，
+     * 并且小于等于 umber.MAX_SAFE_INTEGER 的整数，那么就认为它是一个 类数组类型(array-like)
      *
      * @static
      * @memberOf _
      * @since 4.0.0
      * @category Lang
-     * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+     * @param {*} value 待检测的值.
+     * @returns {boolean} 当 `value` 是一个类数组类型时返回 `true`, 否则返回 `false`
      * @example
      *
      * _.isArrayLike([1, 2, 3]);
@@ -11325,16 +11325,16 @@
     }
 
     /**
-     * This method is like `_.isArrayLike` except that it also checks if `value`
-     * is an object.
+     * 此方法类似于 `_.isArrayLike`, 除了这方法还检测 `value`
+     * 是否是 object 类型
      *
      * @static
      * @memberOf _
      * @since 4.0.0
      * @category Lang
-     * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is an array-like object,
-     *  else `false`.
+     * @param {*} value 待检测的值.
+     * @returns {boolean} 如果 `value` 是 类数组类型的对象(array-like object) 返回 `true`,
+     *  否则 `false`.
      * @example
      *
      * _.isArrayLikeObject([1, 2, 3]);
@@ -11619,14 +11619,14 @@
     }
 
     /**
-     * Checks if `value` is classified as a `Function` object.
+     * 检测 `value` 是否属于 方法(`Function`) 对象.
      *
      * @static
      * @memberOf _
      * @since 0.1.0
      * @category Lang
-     * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+     * @param {*} value 待检测的值.
+     * @returns {boolean} 如果 `value` 是一个 function 类型，则返回true，否则返回false.
      * @example
      *
      * _.isFunction(_);
@@ -11639,8 +11639,8 @@
       if (!isObject(value)) {
         return false;
       }
-      // The use of `Object#toString` avoids issues with the `typeof` operator
-      // in Safari 9 which returns 'object' for typed arrays and other constructors.
+      // 使用 `Object#toString` 避免 `typeof` 造成的问题
+      // 在 Safari 9 中 对 数组 和 其它构造器函数返回 'object'
       var tag = baseGetTag(value);
       return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
     }
@@ -11676,7 +11676,7 @@
     }
 
     /**
-     * Checks if `value` is a valid array-like length.
+     * 检测 `value` 是否是一个有效的 类数组类型(array-like) 的 length 属性.
      *
      * **Note:** This method is loosely based on
      * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
@@ -11685,8 +11685,8 @@
      * @memberOf _
      * @since 4.0.0
      * @category Lang
-     * @param {*} value The value to check.
-     * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+     * @param {*} value 待检测的 `value`.
+     * @returns {boolean} 当 `value` 是一个有效的 length 属性时返回true，否则返回false.
      * @example
      *
      * _.isLength(3);
